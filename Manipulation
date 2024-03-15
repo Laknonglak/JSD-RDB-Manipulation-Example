@@ -1,0 +1,122 @@
+--create a department table
+CREATE TABLE Departments (
+    DepartmentID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    DepartmentName VARCHAR(50)
+);
+
+---------------------------------------------------------------------------------
+
+--create an employee table
+CREATE TABLE Employees (
+EmployeeID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+FirstName VARCHAR(50),
+LastName VARCHAR(50),
+Position VARCHAR(50),
+Email VARCHAR(50) UNIQUE,
+Salary DECIMAL(10,2),
+DepartmentID INT,
+FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID)
+);
+
+
+------------------------------------------------------------------------------------------------------
+
+
+--INSERT INTO department
+INSERT INTO Departments (DepartmentName) VALUES
+('Human Resources'),
+('IT Department'),
+('Marketing'),
+('Finance'),
+('Sales');
+
+select *
+from departments;
+
+
+
+-------------------------------------------------------------------------------------------------------
+
+--INSERT INTO employee
+INSERT INTO Employees (FirstName, LastName, Position, Email, Salary, DepartmentID) VALUES
+('John', 'Doe', 'Manager', 'john.doe@example.com', 60000, 1),
+('Alice', 'Smith', 'Developer', 'alice.smith@example.com', 55000, 2),
+('Bob', 'Johnson', 'Sales Representative', 'bob.johnson@example.com', 50000, 3),
+('Emily', 'Davis', 'HR Specialist', 'emily.davis@example.com', 42000, 1),
+('Michael', 'Miller', 'Data Analyst', 'michael.miller@example.com', 58000, 2),
+('Sophia', 'Brown', 'Marketing Coordinator', 'sophia.brown@example.com', 51000, 3),
+('David', 'Wilson', 'Software Engineer', 'david.wilson@example.com', 60000, 1),
+('Olivia', 'Taylor', 'Financial Analyst', 'olivia.taylor@example.com', 54000, 2),
+('Daniel', 'Anderson', 'Customer Support Specialist', 'daniel.anderson@example.com', 52000, 3),
+('Ella', 'Clark', 'Product Manager', 'ella.clark@example.com', 59000, 1),
+('Matthew', 'Turner', 'Marketing Manager', 'matthew.turner@example.com', 53000, 2),
+('Ava', 'Moore', 'Sales Manager', 'ava.moore@example.com', 51000, 3),
+('James', 'Harris', 'Operations Coordinator', 'james.harris@example.com', 30000, 1),
+('Grace', 'King', 'Software Tester', 'grace.king@example.com', 56000, 2),
+('William', 'Lee', 'Financial Planner', 'william.lee@example.com', 52000, 3),
+('Jason', 'Turner', 'Software Engineer', 'jason.turner@example.com', 58000, 2,'Male'),
+('Rachel', 'Lee', 'HR Specialist', 'rachel.lee@example.com', 50000, 3,NULL),
+('Eric', 'Cooper', 'Financial Planner', 'eric.cooper@example.com', 62000, 1,NULL),
+('Mia', 'Baker', 'Software Tester', 'mia.baker@example.com', 55000, 2, 'Female'),
+('Ella', 'Jones', 'Manager', 'Ella.Jones@example.com', 62000, 1),
+('Simon', 'Smith', 'Developer', 'Simon.smith@example.com', 62000, 2),
+('Jason', 'Johnson', 'Software Developer', 'Jason.johnson@example.com', 62000, 2)
+
+select *
+from employees;
+
+
+----------------------------------------------------------------------------------------------------
+
+--DELETE employees
+DELETE FROM Employees
+WHERE EmployeeID = 2;
+
+DELETE FROM Employees
+WHERE EmployeeID IN (1, 3, 5);
+
+select *
+from employees;
+
+
+
+--DELETE department from department table
+DELETE FROM Departments
+WHERE DepartmentID = 1; --will the error because of Departments has a relationship with Employees
+
+--Need to set FOREIGN KEY to null first
+--Set DepartmentID to NULL for employees in the department to be deleted
+UPDATE Employees
+SET DepartmentID = NULL
+WHERE DepartmentID = [DepartmentID_to_be_deleted];
+
+--Delete the department once employees are updated
+DELETE FROM Departments
+WHERE DepartmentID = [DepartmentID_to_be_deleted];
+
+
+---------------------------------------------------------------------------
+--ALTER
+ALTER TABLE Employees
+ADD Gender CHAR(6) CHECK(Gender IN ('Male', 'Female', 'Other'));
+
+select *
+from employees;
+
+
+------------------------------------------------------------------------------
+--Update
+UPDATE Employees
+SET Gender = 'Male'
+WHERE EmployeeID = 7;
+
+
+UPDATE Employees
+SET Gender = 'Female'
+WHERE EmployeeID IN (4,8,14);
+
+select *
+from employees;
+
+
+
